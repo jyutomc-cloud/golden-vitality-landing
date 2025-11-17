@@ -2,24 +2,33 @@ import processFlow from "@/assets/process-flow.jpg";
 import benefitJoints from "@/assets/benefit-joints.jpg";
 import benefitMental from "@/assets/benefit-mental.jpg";
 import benefitSkin from "@/assets/benefit-skin.jpg";
-import { Play } from "lucide-react";
+import promo2 from "@/assets/promo-2.jpg";
+import promo4 from "@/assets/promo-4.jpg";
+import { Play, X } from "lucide-react";
+import { useState } from "react";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 export const VitalinGallery = () => {
+  const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
+
   const videos = [
     {
       title: "Proses Produksi",
       description: "Lihat proses produksi Vitalin Platinum yang higienis dan berkualitas",
-      thumbnail: processFlow
+      thumbnail: processFlow,
+      videoUrl: "/videos/proses-produksi.mp4"
     },
     {
       title: "Testimoni Pelanggan",
       description: "Dengarkan pengalaman nyata dari pelanggan setia kami",
-      thumbnail: benefitJoints
+      thumbnail: benefitJoints,
+      videoUrl: "/videos/testimoni-pelanggan.mp4"
     },
     {
       title: "Cara Konsumsi",
       description: "Panduan lengkap cara mengonsumsi Vitalin Platinum yang tepat",
-      thumbnail: benefitMental
+      thumbnail: benefitMental,
+      videoUrl: "/videos/cara-konsumsi.mp4"
     }
   ];
 
@@ -41,6 +50,7 @@ export const VitalinGallery = () => {
             <div 
               key={index}
               className="group relative overflow-hidden rounded-2xl bg-card border border-gold/20 hover:border-gold/40 transition-all duration-300 hover:shadow-xl cursor-pointer"
+              onClick={() => setSelectedVideo(video.videoUrl)}
             >
               <div className="aspect-video relative overflow-hidden">
                 <img 
@@ -66,14 +76,41 @@ export const VitalinGallery = () => {
           ))}
         </div>
 
-        {/* Additional Product Image */}
-        <div className="mt-16 max-w-4xl mx-auto">
-          <div className="rounded-2xl overflow-hidden shadow-2xl">
-            <img 
-              src={benefitSkin} 
-              alt="Vitalin Platinum Benefits"
-              className="w-full h-auto"
-            />
+        {/* Video Modal */}
+        <Dialog open={!!selectedVideo} onOpenChange={() => setSelectedVideo(null)}>
+          <DialogContent className="max-w-4xl p-0 bg-black border-gold">
+            <div className="relative aspect-video">
+              {selectedVideo && (
+                <video 
+                  controls 
+                  autoPlay
+                  className="w-full h-full"
+                  src={selectedVideo}
+                >
+                  Browser Anda tidak mendukung video player.
+                </video>
+              )}
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Additional Product Images */}
+        <div className="mt-16 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="rounded-2xl overflow-hidden shadow-2xl hover:shadow-gold/20 transition-shadow">
+              <img 
+                src={promo2} 
+                alt="Vitalin Platinum - Spesial Promo dengan Informasi Nutrisi"
+                className="w-full h-auto hover:scale-105 transition-transform duration-300"
+              />
+            </div>
+            <div className="rounded-2xl overflow-hidden shadow-2xl hover:shadow-gold/20 transition-shadow">
+              <img 
+                src={promo4} 
+                alt="Vitalin Platinum - Premium Quality dengan COD & Gratis Ongkir"
+                className="w-full h-auto hover:scale-105 transition-transform duration-300"
+              />
+            </div>
           </div>
         </div>
       </div>
